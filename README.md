@@ -37,6 +37,9 @@ We welcome contributions from developers of all skill levels. If you'd like to c
 
 We'd love to hear your thoughts on the Sticky Notes app. If you have any feedback, suggestions, or bug reports, please don't hesitate to [open an issue](https://github.com/Ahmed-Adel-Morsi/sticky-notes/issues).
 
+### License:
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
