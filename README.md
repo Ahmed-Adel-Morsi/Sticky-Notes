@@ -2,7 +2,7 @@
 
 # Sticky Notes App
 
-![Sticky Notes](icon.png)
+![Sticky Notes](icon)
 
 ---
 
