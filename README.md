@@ -19,7 +19,7 @@ This repository hosts an amazing Sticky Notes app designed to help you organize 
 
 ### Live Preview:
 
-Experience Sticky Notes directly in your browser with our live preview! Simply click [here](https://ahmed-adel-morsi.github.io/sticky-notes/) to start taking notes instantly.
+Experience Sticky Notes directly in your browser with our live preview! Simply click [here](https://ahmed-adel-morsi.github.io/Sticky-Notes/) to start taking notes instantly.
 
 ### Contributing:
 
