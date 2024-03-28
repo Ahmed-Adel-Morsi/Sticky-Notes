@@ -2,7 +2,7 @@
 
 # Sticky Notes App
 
-![Sticky Notes](https://github.com/Ahmed-Adel-Morsi/Sticky-Notes/blob/main/icon.png)
+
 
 ---
 
