@@ -13,7 +13,7 @@ if (localStorage.getItem("notes")) {
   notesArray = [];
 }
 
-function createNote(id, color, content) {
+function createNote(id, color, content, lang) {
   let note = document.createElement("div");
   note.classList.add("note", "card");
   note.id = id;
@@ -42,13 +42,17 @@ function createNote(id, color, content) {
   textArea.style.backgroundColor = color;
   textArea.value = content;
 
+  if (lang === "ar") textArea.dir = "rtl";
+  else textArea.dir = "ltr";
+
   textArea.oninput = function () {
     updateNoteContent(id, textArea.value);
-    const arabicRegex = /[\u0600-\u06FF]/;
-    if (arabicRegex.test(this.value)) {
+    if (getLang(id) === "ar") {
       textArea.dir = "rtl";
+      setLang(id, "ar");
     } else {
       textArea.dir = "ltr";
+      setLang(id, "en");
     }
   };
 
@@ -72,6 +76,7 @@ function createNoteObject() {
     id: Date.now(),
     color: "#938c8d",
     content: "",
+    lang: "en",
   });
   updatePage();
   updateLocalStorage();
@@ -83,7 +88,8 @@ function updatePage() {
     let note = createNote(
       notesArray[i].id,
       notesArray[i].color,
-      notesArray[i].content
+      notesArray[i].content,
+      notesArray[i].lang
     );
     notes.prepend(note);
   }
@@ -160,6 +166,19 @@ function createCountCard(count, color) {
   notesCounter.appendChild(div);
 }
 
-let textArea = document.querySelectorAll("textarea").forEach((e) => {
-  e.addEventListener("input", function () {});
-});
+function getLang(id) {
+  for (let i = 0; i < notesArray.length; i++) {
+    if (id === notesArray[i].id) {
+      return /[\u0600-\u06FF]/.test(notesArray[i].content) ? "ar" : "en";
+    }
+  }
+}
+function setLang(id, value) {
+  for (let i = 0; i < notesArray.length; i++) {
+    if (id === notesArray[i].id) {
+      notesArray[i].lang = value;
+      updateLocalStorage();
+      break;
+    }
+  }
+}
