@@ -44,6 +44,12 @@ function createNote(id, color, content) {
 
   textArea.oninput = function () {
     updateNoteContent(id, textArea.value);
+    const arabicRegex = /[\u0600-\u06FF]/;
+    if (arabicRegex.test(this.value)) {
+      textArea.dir = "rtl";
+    } else {
+      textArea.dir = "ltr";
+    }
   };
 
   note.appendChild(textArea);
@@ -153,3 +159,7 @@ function createCountCard(count, color) {
 
   notesCounter.appendChild(div);
 }
+
+let textArea = document.querySelectorAll("textarea").forEach((e) => {
+  e.addEventListener("input", function () {});
+});
