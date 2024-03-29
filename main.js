@@ -26,7 +26,8 @@ function createNote(id, color, content) {
     span.className = "color";
 
     span.onclick = function () {
-      span.parentElement.children[6].style.backgroundColor = span.dataset.color;
+      span.parentElement.querySelector("textArea").style.backgroundColor =
+        span.dataset.color;
       span.parentElement.style.backgroundColor = span.dataset.color;
       updateNoteColor(id, span.dataset.color);
       updateColorCount();
@@ -121,7 +122,7 @@ function updateNoteColor(id, value) {
 addBtn.onclick = function () {
   createNoteObject();
   updateColorCount();
-  document.querySelector(".note").children[6].focus();
+  document.querySelector(".note textArea").focus();
 };
 
 function updateCountArray() {
@@ -152,4 +153,3 @@ function createCountCard(count, color) {
 
   notesCounter.appendChild(div);
 }
-
