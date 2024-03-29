@@ -14,19 +14,89 @@
     <title>Sticky Notes</title>
   </head>
   <body>
-    <header>
-      <div class="container">
-        <h1>Sticky Notes</h1>
-      </div>
-    </header>
-    <section class="page-content">
-      <div class="container">
-        <div class="notes">
-          <button class="add-btn card">+</button>
+    <aside>
+      <div class="color-picker">
+        <p>Choose Your Favourite Colors</p>
+        <div class="pick">
+          <label for="first">Color 1: </label>
+          <input type="color" id="first" value="#938c8d" />
         </div>
-        <div class="notes-counter"></div>
+        <div class="pick">
+          <label for="second">Color 2: </label>
+          <input type="color" id="second" value="#ffb900" />
+        </div>
+        <div class="pick">
+          <label for="third">Color 3: </label>
+          <input type="color" id="third" value="#ff6001" />
+        </div>
+        <div class="pick">
+          <label for="fourth">Color 4: </label>
+          <input type="color" id="fourth" value="#ff1e71" />
+        </div>
+        <div class="pick">
+          <label for="fifth">Color 5: </label>
+          <input type="color" id="fifth" value="#864af3" />
+        </div>
+        <div class="pick">
+          <label for="sixth">Color 6: </label>
+          <input type="color" id="sixth" value="#2f86ff" />
+        </div>
       </div>
-    </section>
+      <div class="color-picker">
+        <p>Choose Your Font Settings</p>
+        <div class="pick">
+          <label for="font-color">Color : </label>
+          <input type="color" id="font-color" value="#938c8d" />
+        </div>
+        <div class="pick">
+          <label for="font-family">Family : </label>
+          <select name="" id="font-family">
+            <option value="cairo">Cairo</option>
+            <option value="arial">Arial</option>
+            <option value="roboto">Roboto</option>
+          </select>
+        </div>
+        <div class="pick">
+          <label for="size">Size : </label>
+          <input type="range" id="size" min="10" max="30" value="20" />
+        </div>
+      </div>
+    </aside>
+    <div class="page-content">
+      <header>
+        <!-- <div class="container"> -->
+        <label class="hamburger">
+          <input id="menu-btn" type="checkbox" />
+          <svg viewBox="0 0 32 32">
+            <path
+              class="line line-top-bottom"
+              d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"
+            ></path>
+            <path class="line" d="M7 16 27 16"></path>
+          </svg>
+        </label>
+        <h1>Sticky Notes</h1>
+        <label class="switch">
+          <input class="mode-input" name="mode" type="checkbox" />
+          <span class="slider"></span>
+        </label>
+        <!-- </div> -->
+      </header>
+      <section>
+        <div class="container">
+          <div class="notes">
+            <button class="add-btn card">+</button>
+          </div>
+          <div class="notes-counter"></div>
+        </div>
+      </section>
+      <footer>
+        Made with ❤️ by
+        <a href="https://www.linkedin.com/in/ahmed-adel-morsi/" target="_blank"
+          >Ahmed Adel</a
+        >
+      </footer>
+    </div>
     <script src="main.js"></script>
   </body>
 </html>

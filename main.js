@@ -3,7 +3,17 @@ let addBtn = document.querySelector(".add-btn");
 let notesCounter = document.querySelector(".notes-counter");
 let colors = ["#938c8d", "#ffb900", "#ff6001", "#ff1e71", "#864af3", "#2f86ff"];
 
-let notesArray, colorCount;
+let menuBtn = document.getElementById("menu-btn");
+let modeInput = document.querySelector(".mode-input");
+
+let notesArray, colorCount, mode;
+
+if (localStorage.getItem("mode")) {
+  mode = localStorage.getItem("mode");
+  if (mode === "dark") {
+    modeInput.setAttribute("checked", "checked");
+  }
+}
 
 if (localStorage.getItem("notes")) {
   notesArray = JSON.parse(localStorage.getItem("notes"));
@@ -182,3 +192,8 @@ function setLang(id, value) {
     }
   }
 }
+
+modeInput.onchange = function () {
+  if (modeInput.checked) localStorage.setItem("mode", "dark");
+  else localStorage.setItem("mode", "light");
+};
