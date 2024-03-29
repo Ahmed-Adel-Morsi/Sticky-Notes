@@ -2,8 +2,6 @@
 
 # Sticky Notes App
 
-![Sticky Notes](/icon.png)
-
 ---
 
 ### Welcome to Sticky Notes!
