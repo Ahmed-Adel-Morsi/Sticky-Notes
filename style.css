@@ -67,6 +67,7 @@ body {
         width: 70px;
         height: 27px;
         color: var(--white-color);
+        outline: none;
       }
 
       select, option {
