@@ -1,12 +1,30 @@
 let notes = document.querySelector(".notes");
 let addBtn = document.querySelector(".add-btn");
 let notesCounter = document.querySelector(".notes-counter");
-let colors = ["#938c8d", "#ffb900", "#ff6001", "#ff1e71", "#864af3", "#2f86ff"];
+// let colors = ["#938c8d", "#ffb900", "#ff6001", "#ff1e71", "#864af3", "#2f86ff"];
+// let colors = ["#938c8d", "#ffb900", "#ff6001", "#ff1e71", "#864af3", "#2f86ff"];
 
 let menuBtn = document.getElementById("menu-btn");
 let modeInput = document.querySelector(".mode-input");
 
+let fontFamily = document.getElementById("font-family");
+let weight = document.getElementById("weight");
+let fontColor = document.getElementById("font-color");
+let size = document.getElementById("size");
+let rest = document.getElementById("reset");
+
 let notesArray, colorCount, mode;
+
+let colors;
+if (localStorage.getItem("colors")) {
+  colors = JSON.parse(localStorage.getItem("colors"));
+  document.querySelectorAll(".color-picker input[type=color]").forEach((e) => {
+    e.value = colors[e.dataset.index];
+  });
+} else {
+  colors = ["#938c8d", "#ffb900", "#ff6001", "#ff1e71", "#864af3", "#2f86ff"];
+  localStorage.setItem("colors", JSON.stringify(colors));
+}
 
 if (localStorage.getItem("mode")) {
   mode = localStorage.getItem("mode");
@@ -21,6 +39,26 @@ if (localStorage.getItem("notes")) {
   updateColorCount();
 } else {
   notesArray = [];
+}
+
+if (localStorage.getItem("font-family")) {
+  fontFamily.value = localStorage.getItem("font-family");
+  updateFontSettings("font-family", fontFamily.value);
+}
+
+if (localStorage.getItem("font-weight")) {
+  weight.value = localStorage.getItem("font-weight");
+  updateFontSettings("font-weight", weight.value);
+}
+
+if (localStorage.getItem("color")) {
+  fontColor.value = localStorage.getItem("color");
+  updateFontSettings("color", fontColor.value);
+}
+
+if (localStorage.getItem("font-size")) {
+  size.value = parseInt(localStorage.getItem("font-size"));
+  updateFontSettings("font-size", `${size.value}px`);
 }
 
 function createNote(id, color, content, lang) {
@@ -84,7 +122,7 @@ function createNote(id, color, content, lang) {
 function createNoteObject() {
   notesArray.push({
     id: Date.now(),
-    color: "#938c8d",
+    color: colors[0],
     content: "",
     lang: "en",
   });
@@ -197,3 +235,51 @@ modeInput.onchange = function () {
   if (modeInput.checked) localStorage.setItem("mode", "dark");
   else localStorage.setItem("mode", "light");
 };
+
+function updateFontSettings(property, value) {
+  document.querySelectorAll("textarea").forEach((e) => {
+    e.style.setProperty(property, value);
+  });
+  localStorage.setItem(property, value);
+}
+
+fontFamily.oninput = function () {
+  updateFontSettings("font-family", fontFamily.value);
+};
+weight.oninput = function () {
+  updateFontSettings("font-weight", weight.value);
+};
+fontColor.oninput = function () {
+  updateFontSettings("color", fontColor.value);
+};
+size.oninput = function () {
+  updateFontSettings("font-size", `${size.value}px`);
+};
+
+rest.onclick = function () {
+  colors = ["#938c8d", "#ffb900", "#ff6001", "#ff1e71", "#864af3", "#2f86ff"];
+  localStorage.setItem("colors", JSON.stringify(colors));
+  updatePage();
+
+  fontFamily.value = "'Cairo', sans-serif";
+  updateFontSettings("font-family", fontFamily.value);
+
+  weight.value = "normal";
+  updateFontSettings("font-weight", weight.value);
+
+  fontColor.value = "#ffffff";
+  updateFontSettings("color", fontColor.value);
+
+  size.value = "20px";
+  updateFontSettings("font-size", `${size.value}px`);
+};
+
+document.querySelectorAll(".color-picker input[type=color]").forEach((e) => {
+  e.addEventListener("input", function (event) {
+    colors[event.target.dataset.index] = this.value;
+  });
+  e.addEventListener("change", function (event) {
+    localStorage.setItem("colors", JSON.stringify(colors));
+    updatePage();
+  });
+});

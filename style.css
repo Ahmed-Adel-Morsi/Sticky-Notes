@@ -1,11 +1,13 @@
 :root {
-  --main-color: #ededed;
+  --main-color: #ffffff;
   --secondary-color: #9e9e9e;
   --gray-color: #ddd;
   --grey-color: grey;
-  --white-color: white;
+  --white-color: #f6f8fa;
   --first-color: #938c8d;
   --black-color: black;
+  --aside-back: var(--main-color);
+  --dark-font-color: #1f2328;
 }
 
 * {
@@ -17,8 +19,7 @@
 body {
   font-family: "Cairo", sans-serif;
   background-color: var(--main-color);
-  display: flex;
-  
+
   .container {
     width: 100%;
     max-width: 1200px;
@@ -39,59 +40,64 @@ body {
     }
   }
 
-  aside {
-    width: 0px;
-    overflow: hidden;
-    background-color: var(--black-color);
-    transition: 0.3s ease;
-
-    p {
-      font-weight: bold;
-      border-bottom: 1px solid var(--grey-color);
-      margin-bottom: 5px;
-      color: var(--white-color);
-    }
-
-    .color-picker {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      margin-bottom: 20px;
-
-      .pick {
-        display: flex;
-        align-items: center;
-      }
-
-      input, select, label {
-        width: 70px;
-        height: 27px;
-        color: var(--white-color);
-        outline: none;
-      }
-
-      select, option {
-        color: black;
-      }
-    }
+  header {
+    text-align: center;
+    background-color: var(--white-color);
+    color: var(--black-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--gray-color);
+    padding: 10px 20px;
   }
 
   .page-content {
+    display: flex;
     position: relative;
     min-height: 100vh;
-    flex: 1;
 
-    header {
-      text-align: center;
-      background-color: var(--white-color);
-      color: var(--black-color);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 2px solid var(--gray-color);
-      padding: 10px 20px;
+    aside {
+      width: 0px;
+      overflow: hidden;
+      background-color: var(--aside-back);
+      transition: 0.3s ease;
+      border-right: 2px solid var(--gray-color);
+
+      p {
+        font-weight: bold;
+        border-bottom: 1px solid var(--grey-color);
+        margin-bottom: 5px;
+        color: var(--dark-font-color);
+      }
+
+      .picker {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-bottom: 20px;
+
+        .pick {
+          display: flex;
+          align-items: center;
+        }
+
+        input,
+        select,
+        label {
+          width: 70px;
+          height: 27px;
+          color: var(--dark-font-color);
+          outline: none;
+          cursor: pointer;
+        }
+
+        input,
+        select {
+          cursor: pointer;
+          color: black;
+        }
+      }
     }
-
     section {
       .container {
         .notes {
@@ -134,8 +140,9 @@ body {
               resize: none;
 
               &::placeholder {
-                color: var(--white-color);
+                color: white;
                 opacity: 0.8;
+                font-size: 20px;
               }
             }
 
@@ -293,6 +300,8 @@ body:has(.mode-input:checked) {
   --grey-color: grey;
   --white-color: black;
   --black-color: white;
+  --aside-back: #0d1117;
+  --dark-font-color: white;
 }
 
 /* --------------------------------------------- */
@@ -338,4 +347,7 @@ body:has(.mode-input:checked) {
 body:has(.hamburger input:checked) aside {
   width: 250px;
   padding: 20px;
+}
+body:has(.hamburger input:checked) section {
+  width: calc(100% - 250px);
 }
