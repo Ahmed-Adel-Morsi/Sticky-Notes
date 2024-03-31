@@ -62,13 +62,35 @@ if (localStorage.getItem("notes")) {
 window.onresize = screenDimension;
 window.onload = screenDimension;
 
+let left = document.querySelector(".left");
+let right = document.querySelector(".right");
+let section = document.querySelector("section");
+let header = document.querySelector("header");
+
 function screenDimension() {
   if (window.innerWidth <= 1000) {
-    document.querySelector("section").appendChild(notesCounter.parentElement);
+    section.appendChild(notesCounter.parentElement);
   } else {
-    document.querySelector(".right").appendChild(notesCounter.parentElement);
+    right.appendChild(notesCounter.parentElement);
+  }
+  if (window.innerWidth <= 700) {
+    header.after(left);
+  } else {
+    document.querySelector(".page-content").prepend(left);
   }
 }
+
+let burgerInput = document.getElementById("menu-btn");
+let hamburger = document.querySelector(".hamburger");
+hamburger.onclick = function () {
+  if (burgerInput.checked) {
+    left.classList.remove("hide");
+    left.prepend(hamburger);
+  } else {
+    left.classList.add("hide");
+    document.querySelector("header").prepend(hamburger);
+  }
+};
 
 let fontSettings;
 if (localStorage.getItem("font")) {
@@ -232,6 +254,7 @@ addBtn.onclick = function () {
 function updateCountArray() {
   colorCount = [0, 0, 0, 0, 0, 0];
   for (let i = 0; i < notesArray.length; i++) {
+    // console.log(notesArray[i].colorIndex);
     colorCount[notesArray[i].colorIndex]++;
   }
 }

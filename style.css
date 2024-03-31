@@ -59,6 +59,43 @@ body {
     z-index: 1;
   }
 
+  aside {
+    .picker {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 20px;
+
+      .pick {
+        display: flex;
+        align-items: center;
+      }
+
+      input,
+      select,
+      label {
+        width: 70px;
+        height: 27px;
+        color: var(--dark-font-color);
+        outline: none;
+        cursor: pointer;
+      }
+
+      input,
+      select {
+        cursor: pointer;
+        color: black;
+      }
+    }
+  }
+
+  .category-header {
+    font-weight: bold;
+    border-bottom: 1px solid var(--grey-color);
+    margin-bottom: 5px;
+    color: var(--dark-font-color);
+  }
+
   .page-content {
     display: flex;
     justify-content: space-between;
@@ -66,42 +103,6 @@ body {
     margin: 0 auto;
     position: relative;
 
-    .category-header {
-      font-weight: bold;
-      border-bottom: 1px solid var(--grey-color);
-      margin-bottom: 5px;
-      color: var(--dark-font-color);
-    }
-
-    aside {
-      .picker {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        margin-bottom: 20px;
-
-        .pick {
-          display: flex;
-          align-items: center;
-        }
-
-        input,
-        select,
-        label {
-          width: 70px;
-          height: 27px;
-          color: var(--dark-font-color);
-          outline: none;
-          cursor: pointer;
-        }
-
-        input,
-        select {
-          cursor: pointer;
-          color: black;
-        }
-      }
-    }
     section {
       width: 100%;
       margin: 0 20px;
@@ -304,7 +305,7 @@ body:has(.mode-input:checked) {
 /* --------------------------------------------- */
 .hamburger {
   cursor: pointer;
-  display: flex;
+  display: none;
 }
 
 .hamburger input {
@@ -342,7 +343,22 @@ body:has(.mode-input:checked) {
   stroke-dashoffset: -32.42;
 }
 
-body:has(.hamburger input:checked) {
+body:has(.hamburger input:checked) section,
+body:has(.hamburger input:checked) .right {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+body:has(.hamburger input:checked) .left {
+  display: block;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+  background-color: white;
+  top: 0;
+  left: 0;
+  border-radius: 0 25px 25px 0;
+  margin-left: 0;
 }
 
 .left {
@@ -379,6 +395,9 @@ section {
   body header {
     padding: 5px 10px;
     margin-bottom: 15px;
+  }
+  .hamburger {
+    display: flex;
   }
   .left {
     display: none;
@@ -432,4 +451,12 @@ section {
 }
 .notes-counter {
   margin-bottom: 60px;
+}
+
+/* ::backdrop {
+  background-color: #161b2266;
+} */
+
+.hide {
+  display: none;
 }
