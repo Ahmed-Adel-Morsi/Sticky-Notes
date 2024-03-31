@@ -21,6 +21,7 @@ body {
   background-color: var(--main-color);
   min-height: 100vh;
   position: relative;
+  padding-top: 100px;
 
   .container {
     width: 100%;
@@ -50,8 +51,12 @@ body {
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid var(--gray-color);
-    padding: 10px 20px;
-    margin-bottom: 35px;
+    padding: 5px 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
   }
 
   .page-content {
@@ -60,6 +65,7 @@ body {
     gap: 20px;
     max-width: 1700px;
     margin: 0 auto;
+    position: relative;
 
     .category-header {
       font-weight: bold;
@@ -342,14 +348,16 @@ body:has(.hamburger input:checked) {
 .right {
   min-width: 250px;
   max-width: 250px;
-  height: 100vh;
+  height: fit-content;
   position: sticky;
+  top: 100px;
+  left: 0;
 }
 
 .left,
 .right,
 section {
-  border: 1px solid rgba(255, 255, 255, 0.37);
+  border: 1px solid var(--gray-color);
   border-radius: 10px;
   padding: 20px;
 }
@@ -371,6 +379,9 @@ section {
 }
 
 @media screen and (max-width: 360px) {
+  body {
+    padding-top: 60px;
+  }
   body header {
     padding: 5px 10px;
     margin-bottom: 0;
@@ -393,6 +404,9 @@ section {
   }
 }
 @media screen and (max-width: 240px) {
+  body {
+    padding-top: 30px;
+  }
   body header {
     padding: 0 5px;
   }
