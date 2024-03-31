@@ -33,9 +33,9 @@
     </header>
 
     <div class="page-content">
-      <aside>
+      <aside class="left">
         <div class="color-picker picker">
-          <p>Choose Your Favourite Colors</p>
+          <p class="category-header">Choose Your Favourite Colors</p>
           <div class="pick">
             <label for="first">Color 1: </label>
             <input type="color" id="first" data-index="0" value="#938c8d" />
@@ -62,7 +62,7 @@
           </div>
         </div>
         <div class="picker">
-          <p>Choose Your Font Settings</p>
+          <p class="category-header">Choose Your Font Settings</p>
           <div class="pick">
             <label for="font-family">Family : </label>
             <select id="font-family">
@@ -88,7 +88,7 @@
           </div>
         </div>
         <div class="picker">
-          <p>Default Settings</p>
+          <p class="category-header">Default Settings</p>
           <div class="pick">
             <label for="reset">Reset : </label>
             <input type="reset" id="reset" value="Reset" />
@@ -96,20 +96,24 @@
         </div>
       </aside>
       <section>
-        <div class="container">
           <div class="notes">
             <button class="add-btn card">+</button>
           </div>
+      </section>
+      <div class="right">
+        <div>
+          <p class="category-header">Notes Count</p>
           <div class="notes-counter"></div>
         </div>
-      </section>
-      <footer>
-        Made with ❤️ by
-        <a href="https://www.linkedin.com/in/ahmed-adel-morsi/" target="_blank"
-          >Ahmed Adel</a
-        >
-      </footer>
+      </div>
     </div>
+
+    <footer>
+      Made with ❤️ by
+      <a href="https://www.linkedin.com/in/ahmed-adel-morsi/" target="_blank"
+        >Ahmed Adel</a
+      >
+    </footer>
     <script src="main.js"></script>
   </body>
 </html>

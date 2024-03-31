@@ -19,6 +19,8 @@
 body {
   font-family: "Cairo", sans-serif;
   background-color: var(--main-color);
+  min-height: 100vh;
+  position: relative;
 
   .container {
     width: 100%;
@@ -47,29 +49,26 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 2px solid var(--gray-color);
+    border-bottom: 1px solid var(--gray-color);
     padding: 10px 20px;
+    margin-bottom: 35px;
   }
 
   .page-content {
     display: flex;
-    position: relative;
-    min-height: 100vh;
+    justify-content: space-between;
+    gap: 20px;
+    max-width: 1700px;
+    margin: 0 auto;
+
+    .category-header {
+      font-weight: bold;
+      border-bottom: 1px solid var(--grey-color);
+      margin-bottom: 5px;
+      color: var(--dark-font-color);
+    }
 
     aside {
-      width: 0px;
-      overflow: hidden;
-      background-color: var(--aside-back);
-      transition: 0.3s ease;
-      border-right: 2px solid var(--gray-color);
-
-      p {
-        font-weight: bold;
-        border-bottom: 1px solid var(--grey-color);
-        margin-bottom: 5px;
-        color: var(--dark-font-color);
-      }
-
       .picker {
         display: flex;
         flex-direction: column;
@@ -99,144 +98,135 @@ body {
       }
     }
     section {
-      .container {
-        .notes {
-          display: flex;
-          justify-content: center;
-          flex-wrap: wrap;
-          gap: 15px;
-          margin: 40px 0;
+      width: 100%;
 
-          .note {
-            padding-bottom: 20px;
-            box-shadow: 0 0 2px 2px var(--black-color);
+      .notes {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-column-gap: 3%;
+        grid-row-gap: 24px;
+        margin-bottom: 60px;
+
+        @media screen and (max-width: 1500px) {
+          & {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
           }
-
-          .card {
-            width: 275px;
-            height: 250px;
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-            background-color: var(--first-color);
-
-            .color {
-              float: left;
-              height: 25px;
-              width: calc(100% / 6);
-              cursor: pointer;
-            }
-
-            textarea {
-              width: 100%;
-              height: calc(100% - 25px);
-              padding: 20px;
-              font-size: 20px;
-              font-family: "Cairo", sans-serif;
-              color: var(--white-color);
-              background-color: var(--first-color);
-              border: none;
-              outline: none;
-              resize: none;
-
-              &::placeholder {
-                color: white;
-                opacity: 0.8;
-                font-size: 20px;
-              }
-            }
-
-            .del-btn {
-              position: absolute;
-              background-color: var(--black-color);
-              color: var(--white-color);
-              z-index: 999;
-              bottom: -50px;
-              right: 0;
-              padding: 10px;
-              border: none;
-              border-radius: 10px 0 0 0;
-              cursor: pointer;
-              transition: 0.2s ease;
-            }
-
-            &:hover .del-btn {
-              bottom: 0;
-            }
+        }
+        @media screen and (max-width: 1200px) {
+          & {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-column-gap: 4%;
           }
+        }
+        @media screen and (max-width: 450px) {
+          & {
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+          }
+        }
+        .note {
+          padding-bottom: 20px;
+          box-shadow: 0 0 2px 2px var(--black-color);
+        }
 
-          .add-btn {
-            width: 275px;
-            border: 3px dashed var(--secondary-color);
-            background-color: var(--white-color);
-            font-size: 100px;
-            color: var(--secondary-color);
+        .card {
+          height: 250px;
+          border-radius: 10px;
+          overflow: hidden;
+          position: relative;
+          background-color: var(--first-color);
+
+          .color {
+            float: left;
+            height: 25px;
+            width: calc(100% / 6);
             cursor: pointer;
           }
 
-          .add-btn:hover {
-            color: var(--grey-color);
+          textarea {
+            width: 100%;
+            height: calc(100% - 25px);
+            padding: 20px;
+            font-size: 20px;
+            font-family: "Cairo", sans-serif;
+            color: var(--white-color);
+            background-color: var(--first-color);
+            border: none;
+            outline: none;
+            resize: none;
+
+            &::placeholder {
+              color: white;
+              opacity: 0.8;
+              font-size: 20px;
+            }
+          }
+
+          .del-btn {
+            position: absolute;
+            background-color: var(--black-color);
+            color: var(--white-color);
+            z-index: 999;
+            bottom: -50px;
+            right: 0;
+            padding: 10px;
+            border: none;
+            border-radius: 10px 0 0 0;
+            cursor: pointer;
+            transition: 0.2s ease;
+          }
+
+          &:hover .del-btn {
+            bottom: 0;
           }
         }
 
-        .notes-counter {
-          margin-bottom: 80px;
+        .add-btn {
+          border: 3px dashed var(--secondary-color);
+          background-color: var(--white-color);
+          font-size: 100px;
+          color: var(--secondary-color);
+          cursor: pointer;
+        }
 
-          div {
-            border-bottom: 2px solid var(--black-color);
-            color: var(--black-color);
-            margin-bottom: 5px;
-            padding: 10px;
-            font-size: 18px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-
-            @media (max-width: 145px) {
-              & {
-                flex-direction: column;
-                font-size: 15px;
-              }
-            }
-
-            span {
-              height: 20px;
-              width: 20px;
-              margin-right: 10px;
-
-              @media (max-width: 145px) {
-                & {
-                  margin-right: 0px;
-                }
-              }
-            }
-          }
-
-          div:first-child {
-            border-top: 2px solid var(--black-color);
-          }
+        .add-btn:hover {
+          color: var(--grey-color);
         }
       }
     }
+    .notes-counter {
+      div {
+        color: var(--black-color);
+        padding: 5px;
+        font-size: 18px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
 
-    footer {
-      padding: 10px;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      text-align: center;
-      background-color: var(--white-color);
-      color: var(--black-color);
-      border-top: 2px solid var(--gray-color);
-
-      a {
-        text-decoration: none;
-        color: #2196f3;
-
-        &:hover {
-          text-decoration: underline;
+        span {
+          height: 20px;
+          width: 20px;
+          margin-right: 10px;
         }
+      }
+    }
+  }
+  footer {
+    padding: 10px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    background-color: var(--white-color);
+    color: var(--black-color);
+    border-top: 1px solid var(--gray-color);
+
+    a {
+      text-decoration: none;
+      color: #2196f3;
+
+      &:hover {
+        text-decoration: underline;
       }
     }
   }
@@ -244,7 +234,7 @@ body {
 /* ---------------------------------------------------- */
 /* The switch - the box around the slider */
 .switch {
-  font-size: 17px;
+  font-size: 15px;
   position: relative;
   display: inline-block;
   width: 3.5em;
@@ -307,6 +297,7 @@ body:has(.mode-input:checked) {
 /* --------------------------------------------- */
 .hamburger {
   cursor: pointer;
+  display: flex;
 }
 
 .hamburger input {
@@ -315,7 +306,7 @@ body:has(.mode-input:checked) {
 
 .hamburger svg {
   /* The size of the SVG defines the overall size */
-  height: 3em;
+  height: 2.5em;
   /* Define the transition for transforming the SVG */
   transition: transform 600ms cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -344,10 +335,80 @@ body:has(.mode-input:checked) {
   stroke-dashoffset: -32.42;
 }
 
-body:has(.hamburger input:checked) aside {
-  width: 250px;
+body:has(.hamburger input:checked) {
+}
+
+.left,
+.right {
+  min-width: 250px;
+  max-width: 250px;
+  height: 100vh;
+  position: sticky;
+}
+
+.left,
+.right,
+section {
+  border: 1px solid rgba(255, 255, 255, 0.37);
+  border-radius: 10px;
   padding: 20px;
 }
-body:has(.hamburger input:checked) section {
-  width: calc(100% - 250px);
+
+@media screen and (max-width: 1000px) {
+  .right {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  body header {
+    padding: 5px 10px;
+    margin-bottom: 15px;
+  }
+  .left {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  body header {
+    padding: 5px 10px;
+    margin-bottom: 0;
+  }
+  header h1 {
+    font-size: 20px;
+  }
+  .switch {
+    font-size: 11px;
+  }
+  .hamburger svg {
+    height: 1.8em;
+  }
+  section {
+    padding: 10px;
+  }
+  body footer {
+    padding: 5px;
+    font-size: 11px;
+  }
+}
+@media screen and (max-width: 240px) {
+  body header {
+    padding: 0 5px;
+  }
+  header h1 {
+    font-size: 12px;
+  }
+  .switch {
+    font-size: 6px;
+  }
+  .hamburger svg {
+    height: 1em;
+  }
+  .mode-input:checked + .slider:before {
+    box-shadow: inset 4px -4px 0px 0px #fff000;
+  }
+}
+.notes-counter {
+  margin-bottom: 60px;
 }

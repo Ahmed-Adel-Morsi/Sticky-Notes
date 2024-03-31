@@ -1,8 +1,6 @@
 let notes = document.querySelector(".notes");
 let addBtn = document.querySelector(".add-btn");
 let notesCounter = document.querySelector(".notes-counter");
-// let colors = ["#938c8d", "#ffb900", "#ff6001", "#ff1e71", "#864af3", "#2f86ff"];
-// let colors = ["#938c8d", "#ffb900", "#ff6001", "#ff1e71", "#864af3", "#2f86ff"];
 
 let menuBtn = document.getElementById("menu-btn");
 let modeInput = document.querySelector(".mode-input");
@@ -59,6 +57,17 @@ if (localStorage.getItem("color")) {
 if (localStorage.getItem("font-size")) {
   size.value = parseInt(localStorage.getItem("font-size"));
   updateFontSettings("font-size", `${size.value}px`);
+}
+
+window.onresize = screenDimension;
+window.onload = screenDimension;
+
+function screenDimension() {
+  if (window.innerWidth <= 1000) {
+    document.querySelector("section").appendChild(notesCounter.parentElement);
+  } else {
+    document.querySelector(".right").appendChild(notesCounter.parentElement);
+  }
 }
 
 function createNote(id, color, content, lang) {
