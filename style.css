@@ -62,7 +62,6 @@ body {
   .page-content {
     display: flex;
     justify-content: space-between;
-    gap: 20px;
     max-width: 1700px;
     margin: 0 auto;
     position: relative;
@@ -105,6 +104,7 @@ body {
     }
     section {
       width: 100%;
+      margin: 0 20px;
 
       .notes {
         display: grid;
@@ -164,6 +164,7 @@ body {
               color: white;
               opacity: 0.8;
               font-size: 20px;
+              font-weight: normal;
             }
           }
 
@@ -344,6 +345,12 @@ body:has(.mode-input:checked) {
 body:has(.hamburger input:checked) {
 }
 
+.left {
+  margin-left: 20px;
+}
+.right {
+  margin-right: 20px;
+}
 .left,
 .right {
   min-width: 250px;

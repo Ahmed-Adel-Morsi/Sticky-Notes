@@ -39,25 +39,25 @@ if (localStorage.getItem("notes")) {
   notesArray = [];
 }
 
-if (localStorage.getItem("font-family")) {
-  fontFamily.value = localStorage.getItem("font-family");
-  updateFontSettings("font-family", fontFamily.value);
-}
+// if (localStorage.getItem("font-family")) {
+//   fontFamily.value = localStorage.getItem("font-family");
+//   updateFontSettings("font-family", fontFamily.value);
+// }
 
-if (localStorage.getItem("font-weight")) {
-  weight.value = localStorage.getItem("font-weight");
-  updateFontSettings("font-weight", weight.value);
-}
+// if (localStorage.getItem("font-weight")) {
+//   weight.value = localStorage.getItem("font-weight");
+//   updateFontSettings("font-weight", weight.value);
+// }
 
-if (localStorage.getItem("color")) {
-  fontColor.value = localStorage.getItem("color");
-  updateFontSettings("color", fontColor.value);
-}
+// if (localStorage.getItem("color")) {
+//   fontColor.value = localStorage.getItem("color");
+//   updateFontSettings("color", fontColor.value);
+// }
 
-if (localStorage.getItem("font-size")) {
-  size.value = parseInt(localStorage.getItem("font-size"));
-  updateFontSettings("font-size", `${size.value}px`);
-}
+// if (localStorage.getItem("font-size")) {
+//   size.value = parseInt(localStorage.getItem("font-size"));
+//   updateFontSettings("font-size", `${size.value}px`);
+// }
 
 window.onresize = screenDimension;
 window.onload = screenDimension;
@@ -70,11 +70,46 @@ function screenDimension() {
   }
 }
 
-function createNote(id, color, content, lang) {
+let fontSettings;
+if (localStorage.getItem("font")) {
+  fontSettings = JSON.parse(localStorage.getItem("font"));
+  updateFontSettings2();
+} else {
+  fontSettings = {
+    "font-weight": "normal",
+    "font-size": "20px",
+    "font-family": "'Cairo', sans-serif",
+    color: "normal",
+  };
+}
+
+function updateFontSettings2() {
+  let keys = Object.keys(fontSettings);
+  let values = Object.values(fontSettings);
+  for (let i = 0; i < keys.length; i++) {
+    document.querySelectorAll("textarea").forEach((e) => {
+      e.style.setProperty(keys[i], values[i]);
+    });
+  }
+  localStorage.setItem("font", JSON.stringify(fontSettings));
+}
+
+document
+  .querySelectorAll(".font-settings select, .font-settings input")
+  .forEach((e) => {
+    e.addEventListener("input", function () {
+      fontSettings[this.id] =
+        this.id != "font-size" ? this.value : `${this.value}px`;
+      updateFontSettings2();
+      console.log(fontSettings);
+    });
+  });
+
+function createNote(id, colorIndex, content, lang) {
   let note = document.createElement("div");
   note.classList.add("note", "card");
   note.id = id;
-  note.style.backgroundColor = color;
+  note.style.backgroundColor = colors[colorIndex];
 
   for (let i = 0; i < colors.length; i++) {
     let span = document.createElement("span");
@@ -96,7 +131,7 @@ function createNote(id, color, content, lang) {
   let textArea = document.createElement("textarea");
   textArea.name = "content";
   textArea.placeholder = "Type any Note";
-  textArea.style.backgroundColor = color;
+  textArea.style.backgroundColor = colors[colorIndex];
   textArea.value = content;
 
   if (lang === "ar") textArea.dir = "rtl";
@@ -131,7 +166,7 @@ function createNote(id, color, content, lang) {
 function createNoteObject() {
   notesArray.push({
     id: Date.now(),
-    color: colors[0],
+    colorIndex: 0,
     content: "",
     lang: "en",
   });
@@ -144,7 +179,7 @@ function updatePage() {
   for (let i = 0; i < notesArray.length; i++) {
     let note = createNote(
       notesArray[i].id,
-      notesArray[i].color,
+      notesArray[i].colorIndex,
       notesArray[i].content,
       notesArray[i].lang
     );
@@ -181,7 +216,7 @@ function updateNoteContent(id, value) {
 function updateNoteColor(id, value) {
   for (let i = 0; i < notesArray.length; i++) {
     if (notesArray[i].id == id) {
-      notesArray[i].color = value;
+      notesArray[i].colorIndex = colors.indexOf(value);
       updateLocalStorage(notesArray);
       break;
     }
@@ -197,7 +232,7 @@ addBtn.onclick = function () {
 function updateCountArray() {
   colorCount = [0, 0, 0, 0, 0, 0];
   for (let i = 0; i < notesArray.length; i++) {
-    colorCount[colors.indexOf(notesArray[i].color)]++;
+    colorCount[notesArray[i].colorIndex]++;
   }
 }
 
@@ -245,25 +280,25 @@ modeInput.onchange = function () {
   else localStorage.setItem("mode", "light");
 };
 
-function updateFontSettings(property, value) {
-  document.querySelectorAll("textarea").forEach((e) => {
-    e.style.setProperty(property, value);
-  });
-  localStorage.setItem(property, value);
-}
+// function updateFontSettings(property, value) {
+//   document.querySelectorAll("textarea").forEach((e) => {
+//     e.style.setProperty(property, value);
+//   });
+//   localStorage.setItem(property, value);
+// }
 
-fontFamily.oninput = function () {
-  updateFontSettings("font-family", fontFamily.value);
-};
-weight.oninput = function () {
-  updateFontSettings("font-weight", weight.value);
-};
-fontColor.oninput = function () {
-  updateFontSettings("color", fontColor.value);
-};
-size.oninput = function () {
-  updateFontSettings("font-size", `${size.value}px`);
-};
+// fontFamily.oninput = function () {
+//   updateFontSettings("font-family", fontFamily.value);
+// };
+// weight.oninput = function () {
+//   updateFontSettings("font-weight", weight.value);
+// };
+// fontColor.oninput = function () {
+//   updateFontSettings("color", fontColor.value);
+// };
+// size.oninput = function () {
+//   updateFontSettings("font-size", `${size.value}px`);
+// };
 
 rest.onclick = function () {
   colors = ["#938c8d", "#ffb900", "#ff6001", "#ff1e71", "#864af3", "#2f86ff"];
