@@ -55,7 +55,7 @@ if (localStorage.getItem("font")) {
 } else {
   fontSettings = {
     "font-weight": "normal",
-    "font-size": "20px",
+    "font-size": "18px",
     "font-family": "'Cairo', sans-serif",
     color: "#ffffff",
   };
@@ -75,7 +75,6 @@ function screenDimension() {
   } else {
     document.querySelector(".page-content").prepend(left);
     document.body.classList.remove("sidebar-open");
-    sidebarHeader.classList.add("hide");
     left.style.removeProperty("width");
   }
 }
@@ -83,13 +82,11 @@ function screenDimension() {
 hamburger.onclick = function () {
   left.style.width = "250px";
   document.body.classList.add("sidebar-open");
-  sidebarHeader.classList.remove("hide");
 };
 
 closeNavBtn.onclick = function () {
   left.style.width = "0";
   document.body.classList.remove("sidebar-open");
-  sidebarHeader.classList.add("hide");
 };
 
 function updateFontSettings() {
@@ -255,7 +252,6 @@ addBtn.onclick = function () {
 function updateCountArray() {
   colorCount = [0, 0, 0, 0, 0, 0];
   for (let i = 0; i < notesArray.length; i++) {
-    // console.log(notesArray[i].colorIndex);
     colorCount[notesArray[i].colorIndex]++;
   }
 }
@@ -311,7 +307,7 @@ rest.onclick = function () {
 
   fontSettings = {
     "font-weight": "normal",
-    "font-size": "20px",
+    "font-size": "18px",
     "font-family": "'Cairo', sans-serif",
     color: "#ffffff",
   };
