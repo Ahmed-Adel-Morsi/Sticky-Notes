@@ -11,7 +11,16 @@ let fontColor = document.getElementById("font-color");
 let size = document.getElementById("size");
 let rest = document.getElementById("reset");
 
-let notesArray, colorCount, mode;
+let hamburger = document.querySelector(".hamburger");
+let sidebarHeader = document.querySelector(".sidebar-header");
+let closeNavBtn = document.querySelector(".sidebar-x");
+
+let left = document.querySelector(".left");
+let right = document.querySelector(".right");
+let section = document.querySelector("section");
+let header = document.querySelector("header");
+
+let notesArray, colorCount, mode, fontSettings;
 
 let colors;
 if (localStorage.getItem("colors")) {
@@ -39,33 +48,21 @@ if (localStorage.getItem("notes")) {
   notesArray = [];
 }
 
-// if (localStorage.getItem("font-family")) {
-//   fontFamily.value = localStorage.getItem("font-family");
-//   updateFontSettings("font-family", fontFamily.value);
-// }
-
-// if (localStorage.getItem("font-weight")) {
-//   weight.value = localStorage.getItem("font-weight");
-//   updateFontSettings("font-weight", weight.value);
-// }
-
-// if (localStorage.getItem("color")) {
-//   fontColor.value = localStorage.getItem("color");
-//   updateFontSettings("color", fontColor.value);
-// }
-
-// if (localStorage.getItem("font-size")) {
-//   size.value = parseInt(localStorage.getItem("font-size"));
-//   updateFontSettings("font-size", `${size.value}px`);
-// }
+if (localStorage.getItem("font")) {
+  fontSettings = JSON.parse(localStorage.getItem("font"));
+  updateFontSettings();
+  updateSideFontSettings();
+} else {
+  fontSettings = {
+    "font-weight": "normal",
+    "font-size": "20px",
+    "font-family": "'Cairo', sans-serif",
+    color: "#ffffff",
+  };
+}
 
 window.onresize = screenDimension;
 window.onload = screenDimension;
-
-let left = document.querySelector(".left");
-let right = document.querySelector(".right");
-let section = document.querySelector("section");
-let header = document.querySelector("header");
 
 function screenDimension() {
   if (window.innerWidth <= 1000) {
@@ -77,35 +74,25 @@ function screenDimension() {
     header.after(left);
   } else {
     document.querySelector(".page-content").prepend(left);
+    document.body.classList.remove("sidebar-open");
+    sidebarHeader.classList.add("hide");
+    left.style.removeProperty("width");
   }
 }
 
-let burgerInput = document.getElementById("menu-btn");
-let hamburger = document.querySelector(".hamburger");
 hamburger.onclick = function () {
-  if (burgerInput.checked) {
-    left.classList.remove("hide");
-    left.prepend(hamburger);
-  } else {
-    left.classList.add("hide");
-    document.querySelector("header").prepend(hamburger);
-  }
+  left.style.width = "250px";
+  document.body.classList.add("sidebar-open");
+  sidebarHeader.classList.remove("hide");
 };
 
-let fontSettings;
-if (localStorage.getItem("font")) {
-  fontSettings = JSON.parse(localStorage.getItem("font"));
-  updateFontSettings2();
-} else {
-  fontSettings = {
-    "font-weight": "normal",
-    "font-size": "20px",
-    "font-family": "'Cairo', sans-serif",
-    color: "normal",
-  };
-}
+closeNavBtn.onclick = function () {
+  left.style.width = "0";
+  document.body.classList.remove("sidebar-open");
+  sidebarHeader.classList.add("hide");
+};
 
-function updateFontSettings2() {
+function updateFontSettings() {
   let keys = Object.keys(fontSettings);
   let values = Object.values(fontSettings);
   for (let i = 0; i < keys.length; i++) {
@@ -116,14 +103,27 @@ function updateFontSettings2() {
   localStorage.setItem("font", JSON.stringify(fontSettings));
 }
 
+function updateSideFontSettings() {
+  let keys = Object.keys(fontSettings);
+  let values = Object.values(fontSettings);
+  for (let i = 0; i < keys.length; i++) {
+    document
+      .querySelectorAll(".font-settings select, .font-settings input")
+      .forEach((e) => {
+        if (e.id === keys[i]) {
+          e.value = keys[i] === "font-size" ? parseInt(values[i]) : values[i];
+        }
+      });
+  }
+}
+
 document
   .querySelectorAll(".font-settings select, .font-settings input")
   .forEach((e) => {
     e.addEventListener("input", function () {
       fontSettings[this.id] =
         this.id != "font-size" ? this.value : `${this.value}px`;
-      updateFontSettings2();
-      console.log(fontSettings);
+      updateFontSettings();
     });
   });
 
@@ -248,6 +248,7 @@ function updateNoteColor(id, value) {
 addBtn.onclick = function () {
   createNoteObject();
   updateColorCount();
+  updateFontSettings();
   document.querySelector(".note textArea").focus();
 };
 
@@ -303,42 +304,19 @@ modeInput.onchange = function () {
   else localStorage.setItem("mode", "light");
 };
 
-// function updateFontSettings(property, value) {
-//   document.querySelectorAll("textarea").forEach((e) => {
-//     e.style.setProperty(property, value);
-//   });
-//   localStorage.setItem(property, value);
-// }
-
-// fontFamily.oninput = function () {
-//   updateFontSettings("font-family", fontFamily.value);
-// };
-// weight.oninput = function () {
-//   updateFontSettings("font-weight", weight.value);
-// };
-// fontColor.oninput = function () {
-//   updateFontSettings("color", fontColor.value);
-// };
-// size.oninput = function () {
-//   updateFontSettings("font-size", `${size.value}px`);
-// };
-
 rest.onclick = function () {
   colors = ["#938c8d", "#ffb900", "#ff6001", "#ff1e71", "#864af3", "#2f86ff"];
   localStorage.setItem("colors", JSON.stringify(colors));
   updatePage();
 
-  fontFamily.value = "'Cairo', sans-serif";
-  updateFontSettings("font-family", fontFamily.value);
-
-  weight.value = "normal";
-  updateFontSettings("font-weight", weight.value);
-
-  fontColor.value = "#ffffff";
-  updateFontSettings("color", fontColor.value);
-
-  size.value = "20px";
-  updateFontSettings("font-size", `${size.value}px`);
+  fontSettings = {
+    "font-weight": "normal",
+    "font-size": "20px",
+    "font-family": "'Cairo', sans-serif",
+    color: "#ffffff",
+  };
+  updateFontSettings();
+  updateSideFontSettings();
 };
 
 document.querySelectorAll(".color-picker input[type=color]").forEach((e) => {

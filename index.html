@@ -14,18 +14,19 @@
     <title>Sticky Notes</title>
   </head>
   <body>
+    <div class="overlay"></div>
     <header>
-      <label class="hamburger">
-        <input id="menu-btn" type="checkbox" />
-        <svg viewBox="0 0 32 32">
+      <button class="hamburger">
+        <svg viewBox="0 0 16 16">
           <path
-            class="line line-top-bottom"
-            d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"
+            d="M1 2.75A.75.75 0 0 1 1.75 2h12.5a.75.75 0 0 1 0 1.5H1.75A.75.75 0 0 1 1 2.75Zm0 5A.75.75 0 0 1 1.75 7h12.5a.75.75 0 0 1 0 1.5H1.75A.75.75 0 0 1 1 7.75ZM1.75 12h12.5a.75.75 0 0 1 0 1.5H1.75a.75.75 0 0 1 0-1.5Z"
           ></path>
-          <path class="line" d="M7 16 27 16"></path>
         </svg>
-      </label>
-      <h1>Sticky Notes</h1>
+      </button>
+      <div class="titled-logo">
+        <img src="icon.png" alt="">
+        <h1>Sticky Notes</h1>
+      </div>
       <label class="switch">
         <input class="mode-input" name="mode" type="checkbox" />
         <span class="slider"></span>
@@ -34,64 +35,76 @@
 
     <div class="page-content">
       <aside class="left">
-        <div class="color-picker picker">
-          <p class="category-header">Choose Your Favourite Colors</p>
-          <div class="pick">
-            <label for="first">Color 1: </label>
-            <input type="color" id="first" data-index="0" value="#938c8d" />
-          </div>
-          <div class="pick">
-            <label for="second">Color 2: </label>
-            <input type="color" id="second" data-index="1" value="#ffb900" />
-          </div>
-          <div class="pick">
-            <label for="third">Color 3: </label>
-            <input type="color" id="third" data-index="2" value="#ff6001" />
-          </div>
-          <div class="pick">
-            <label for="fourth">Color 4: </label>
-            <input type="color" id="fourth" data-index="3" value="#ff1e71" />
-          </div>
-          <div class="pick">
-            <label for="fifth">Color 5: </label>
-            <input type="color" id="fifth" data-index="4" value="#864af3" />
-          </div>
-          <div class="pick">
-            <label for="sixth">Color 6: </label>
-            <input type="color" id="sixth" data-index="5" value="#2f86ff" />
-          </div>
+        <div class="sidebar-header hide">
+          <img src="icon.png" alt="">
+          <button class="sidebar-x">
+            <svg viewBox="0 0 16 16">
+              <path
+                d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"
+              ></path>
+            </svg>
+          </button>
         </div>
-        <div class="font-settings picker">
-          <p class="category-header">Choose Your Font Settings</p>
-          <div class="pick">
-            <label for="font-family">Family : </label>
-            <select id="font-family">
-              <option value="'Cairo', sans-serif">Cairo</option>
-              <option value="Arial, Helvetica, sans-serif">Arial</option>
-              <option value="'Roboto', sans-serif">Roboto</option>
-            </select>
+        <div class="content">
+          <div class="color-picker picker">
+            <p class="category-header">Choose Your Favourite Colors</p>
+            <div class="pick">
+              <label for="first">Color 1: </label>
+              <input type="color" id="first" data-index="0" value="#938c8d" />
+            </div>
+            <div class="pick">
+              <label for="second">Color 2: </label>
+              <input type="color" id="second" data-index="1" value="#ffb900" />
+            </div>
+            <div class="pick">
+              <label for="third">Color 3: </label>
+              <input type="color" id="third" data-index="2" value="#ff6001" />
+            </div>
+            <div class="pick">
+              <label for="fourth">Color 4: </label>
+              <input type="color" id="fourth" data-index="3" value="#ff1e71" />
+            </div>
+            <div class="pick">
+              <label for="fifth">Color 5: </label>
+              <input type="color" id="fifth" data-index="4" value="#864af3" />
+            </div>
+            <div class="pick">
+              <label for="sixth">Color 6: </label>
+              <input type="color" id="sixth" data-index="5" value="#2f86ff" />
+            </div>
           </div>
-          <div class="pick">
-            <label for="font-weight">weight : </label>
-            <select id="font-weight">
-              <option value="normal">Normal</option>
-              <option value="bold">Bold</option>
-            </select>
+          <div class="font-settings picker">
+            <p class="category-header">Choose Your Font Settings</p>
+            <div class="pick">
+              <label for="font-family">Family : </label>
+              <select id="font-family">
+                <option value="'Cairo', sans-serif">Cairo</option>
+                <option value="Arial, Helvetica, sans-serif">Arial</option>
+                <option value="'Roboto', sans-serif">Roboto</option>
+              </select>
+            </div>
+            <div class="pick">
+              <label for="font-weight">weight : </label>
+              <select id="font-weight">
+                <option value="normal">Normal</option>
+                <option value="bold">Bold</option>
+              </select>
+            </div>
+            <div class="pick">
+              <label for="color">Color : </label>
+              <input type="color" id="color" value="#938c8d" />
+            </div>
+            <div class="pick">
+              <label for="font-size">Size : </label>
+              <input type="range" id="font-size" min="10" max="30" value="20" />
+            </div>
           </div>
-          <div class="pick">
-            <label for="color">Color : </label>
-            <input type="color" id="color" value="#938c8d" />
-          </div>
-          <div class="pick">
-            <label for="font-size">Size : </label>
-            <input type="range" id="font-size" min="10" max="30" value="20" />
-          </div>
-        </div>
-        <div class="picker">
-          <p class="category-header">Default Settings</p>
-          <div class="pick">
-            <label for="reset">Reset : </label>
-            <input type="reset" id="reset" value="Reset" />
+          <div class="picker">
+            <p class="category-header">Default Settings</p>
+            <div class="pick">
+              <label for="reset">Reset : </label>
+              <input type="reset" id="reset" value="Reset" />
+            </div>
           </div>
         </div>
       </aside>
