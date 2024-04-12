@@ -178,6 +178,7 @@ function createNote(id, colorIndex, content, lang) {
       span.parentElement.querySelector("textArea").style.backgroundColor =
         colors[index];
       span.parentElement.style.backgroundColor = colors[index];
+      span.parentElement.querySelector("textarea").dataset.colorIndex = index;
       updateNoteColor(id, index);
     };
 
