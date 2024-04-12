@@ -2,67 +2,87 @@ let notes = document.querySelector(".notes");
 let addBtn = document.querySelector(".add-btn");
 let notesCounter = document.querySelector(".notes-counter");
 
-let menuBtn = document.getElementById("menu-btn");
 let modeInput = document.querySelector(".mode-input");
 
-let fontFamily = document.getElementById("font-family");
-let weight = document.getElementById("weight");
-let fontColor = document.getElementById("font-color");
-let size = document.getElementById("size");
-let rest = document.getElementById("reset");
+let reset = document.getElementById("reset");
 
 let hamburger = document.querySelector(".hamburger");
-let sidebarHeader = document.querySelector(".sidebar-header");
 let closeNavBtn = document.querySelector(".sidebar-x");
 
+let overlay = document.querySelector(".overlay");
 let left = document.querySelector(".left");
 let right = document.querySelector(".right");
 let section = document.querySelector("section");
 let header = document.querySelector("header");
 
-let notesArray, colorCount, mode, fontSettings;
+let colorInputs = document.querySelectorAll(".color-picker input[type=color]");
+let fontSettingInputs = document.querySelectorAll(
+  ".font-settings select, .font-settings input"
+);
 
-let colors;
-if (localStorage.getItem("colors")) {
-  colors = JSON.parse(localStorage.getItem("colors"));
-  document.querySelectorAll(".color-picker input[type=color]").forEach((e) => {
-    e.value = colors[e.dataset.index];
-  });
-} else {
-  colors = ["#938c8d", "#ffb900", "#ff6001", "#ff1e71", "#864af3", "#2f86ff"];
-  localStorage.setItem("colors", JSON.stringify(colors));
-}
+let notesArray, colorCount, mode, fontSettings, colors;
 
-if (localStorage.getItem("mode")) {
-  mode = localStorage.getItem("mode");
+mode = localStorage.getItem("mode");
+if (mode) {
   if (mode === "dark") {
     modeInput.setAttribute("checked", "checked");
   }
 }
 
-if (localStorage.getItem("notes")) {
-  notesArray = JSON.parse(localStorage.getItem("notes"));
-  updatePage();
-  updateColorCount();
+if (localStorage.getItem("colors")) {
+  colors = JSON.parse(localStorage.getItem("colors"));
+  updateSidebarColors();
 } else {
-  notesArray = [];
+  resetColorSettings();
 }
 
 if (localStorage.getItem("font")) {
   fontSettings = JSON.parse(localStorage.getItem("font"));
-  updateFontSettings();
   updateSideFontSettings();
 } else {
-  fontSettings = {
-    "font-weight": "normal",
-    "font-size": "18px",
-    "font-family": "'Cairo', sans-serif",
-    color: "#ffffff",
-  };
+  resetFontSettings();
+}
+
+if (localStorage.getItem("notes")) {
+  notesArray = JSON.parse(localStorage.getItem("notes"));
+  updatePage();
+} else {
+  notesArray = [];
 }
 
 window.onresize = screenDimension;
 window.onload = screenDimension;
+
+hamburger.onclick = openSidebar;
+
+closeNavBtn.onclick = closeSidebar;
+overlay.onclick = closeSidebar;
+
+addBtn.onclick = createNoteObject;
+
+reset.onclick = resetAllSettings;
+
+modeInput.onchange = function () {
+  if (modeInput.checked) changeMode("dark");
+  else changeMode("light");
+};
+
+colorInputs.forEach((e) => {
+  e.addEventListener("input", function (event) {
+    colors[event.target.dataset.index] = this.value;
+    updatePage();
+  });
+  e.addEventListener("change", saveColorPalette);
+});
+
+fontSettingInputs.forEach((e) => {
+  e.addEventListener("input", function () {
+    fontSettings[this.id] =
+      this.id != "font-size" ? this.value : `${this.value}px`;
+    updateFontSettings();
+  });
+  e.addEventListener("change", saveFontSettings);
+});
 
 function screenDimension() {
   if (window.innerWidth <= 1000) {
@@ -74,55 +94,44 @@ function screenDimension() {
     header.after(left);
   } else {
     document.querySelector(".page-content").prepend(left);
-    document.body.classList.remove("sidebar-open");
-    left.style.removeProperty("width");
+    closeSidebar();
   }
 }
 
-hamburger.onclick = function () {
-  left.style.width = "250px";
-  document.body.classList.add("sidebar-open");
-};
-
-closeNavBtn.onclick = function () {
-  left.style.width = "0";
+function closeSidebar() {
   document.body.classList.remove("sidebar-open");
-};
+  left.style.removeProperty("width");
+  left.style.removeProperty("border-right");
+}
+
+function openSidebar() {
+  document.body.classList.add("sidebar-open");
+  left.style.width = "min(250px, 100%)";
+  left.style.borderRight = "1px solid var(--main-border-color)";
+}
 
 function updateFontSettings() {
-  let keys = Object.keys(fontSettings);
-  let values = Object.values(fontSettings);
-  for (let i = 0; i < keys.length; i++) {
+  let entries = Object.entries(fontSettings);
+  for (let i = 0; i < entries.length; i++) {
     document.querySelectorAll("textarea").forEach((e) => {
-      e.style.setProperty(keys[i], values[i]);
+      e.style.setProperty(entries[i][0], entries[i][1]);
     });
   }
-  localStorage.setItem("font", JSON.stringify(fontSettings));
 }
 
 function updateSideFontSettings() {
-  let keys = Object.keys(fontSettings);
-  let values = Object.values(fontSettings);
-  for (let i = 0; i < keys.length; i++) {
-    document
-      .querySelectorAll(".font-settings select, .font-settings input")
-      .forEach((e) => {
-        if (e.id === keys[i]) {
-          e.value = keys[i] === "font-size" ? parseInt(values[i]) : values[i];
-        }
-      });
+  let entries = Object.entries(fontSettings);
+  for (let i = 0; i < entries.length; i++) {
+    fontSettingInputs.forEach((e) => {
+      if (e.id === entries[i][0]) {
+        e.value =
+          entries[i][0] === "font-size"
+            ? parseInt(entries[i][1])
+            : entries[i][1];
+      }
+    });
   }
 }
-
-document
-  .querySelectorAll(".font-settings select, .font-settings input")
-  .forEach((e) => {
-    e.addEventListener("input", function () {
-      fontSettings[this.id] =
-        this.id != "font-size" ? this.value : `${this.value}px`;
-      updateFontSettings();
-    });
-  });
 
 function createNote(id, colorIndex, content, lang) {
   let note = document.createElement("div");
@@ -190,11 +199,14 @@ function createNoteObject() {
     lang: "en",
   });
   updatePage();
-  updateLocalStorage();
+  saveAllNotes();
+  document.querySelector(".note textArea").focus();
 }
 
 function updatePage() {
+  // Removes All Notes from page
   document.querySelectorAll(".note").forEach((e) => e.remove());
+  // Add All Notes inside notes Array to the page
   for (let i = 0; i < notesArray.length; i++) {
     let note = createNote(
       notesArray[i].id,
@@ -204,6 +216,8 @@ function updatePage() {
     );
     notes.prepend(note);
   }
+  updateFontSettings();
+  updateColorCount();
 }
 
 function deleteNote(id) {
@@ -211,22 +225,17 @@ function deleteNote(id) {
     if (notesArray[i].id === id) {
       notesArray.splice(i, 1);
       updatePage();
-      updateLocalStorage(notesArray);
-      updateColorCount();
+      saveAllNotes();
       break;
     }
   }
-}
-
-function updateLocalStorage() {
-  localStorage.setItem("notes", JSON.stringify(notesArray));
 }
 
 function updateNoteContent(id, value) {
   for (let i = 0; i < notesArray.length; i++) {
     if (notesArray[i].id === id) {
       notesArray[i].content = value;
-      updateLocalStorage(notesArray);
+      saveAllNotes();
       break;
     }
   }
@@ -236,18 +245,11 @@ function updateNoteColor(id, value) {
   for (let i = 0; i < notesArray.length; i++) {
     if (notesArray[i].id == id) {
       notesArray[i].colorIndex = colors.indexOf(value);
-      updateLocalStorage(notesArray);
+      saveAllNotes();
       break;
     }
   }
 }
-
-addBtn.onclick = function () {
-  createNoteObject();
-  updateColorCount();
-  updateFontSettings();
-  document.querySelector(".note textArea").focus();
-};
 
 function updateCountArray() {
   colorCount = [0, 0, 0, 0, 0, 0];
@@ -285,42 +287,58 @@ function getLang(id) {
     }
   }
 }
+
 function setLang(id, value) {
   for (let i = 0; i < notesArray.length; i++) {
     if (id === notesArray[i].id) {
       notesArray[i].lang = value;
-      updateLocalStorage();
+      saveAllNotes();
       break;
     }
   }
 }
 
-modeInput.onchange = function () {
-  if (modeInput.checked) localStorage.setItem("mode", "dark");
-  else localStorage.setItem("mode", "light");
-};
+function changeMode(mode) {
+  localStorage.setItem("mode", mode);
+}
 
-rest.onclick = function () {
+function resetColorSettings() {
   colors = ["#938c8d", "#ffb900", "#ff6001", "#ff1e71", "#864af3", "#2f86ff"];
-  localStorage.setItem("colors", JSON.stringify(colors));
-  updatePage();
+  saveColorPalette();
+}
 
+function resetFontSettings() {
   fontSettings = {
     "font-weight": "normal",
     "font-size": "18px",
     "font-family": "'Cairo', sans-serif",
     color: "#ffffff",
   };
-  updateFontSettings();
-  updateSideFontSettings();
-};
+  saveFontSettings();
+}
 
-document.querySelectorAll(".color-picker input[type=color]").forEach((e) => {
-  e.addEventListener("input", function (event) {
-    colors[event.target.dataset.index] = this.value;
+function resetAllSettings () {
+  resetColorSettings();
+  resetFontSettings();
+  updatePage();
+  updateSideFontSettings();
+  updateSidebarColors();
+}
+
+function saveAllNotes() {
+  localStorage.setItem("notes", JSON.stringify(notesArray));
+}
+
+function saveColorPalette() {
+  localStorage.setItem("colors", JSON.stringify(colors));
+}
+
+function saveFontSettings() {
+  localStorage.setItem("font", JSON.stringify(fontSettings));
+}
+
+function updateSidebarColors() {
+  colorInputs.forEach((e) => {
+    e.value = colors[e.dataset.index];
   });
-  e.addEventListener("change", function (event) {
-    localStorage.setItem("colors", JSON.stringify(colors));
-    updatePage();
-  });
-});
+}
