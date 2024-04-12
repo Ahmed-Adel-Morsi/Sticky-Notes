@@ -22,9 +22,8 @@ let fontSettingInputs = document.querySelectorAll(
 
 let notesArray, colorCount, mode, fontSettings, colors;
 
-mode = localStorage.getItem("mode");
-if (mode) {
-  if (mode === "dark") {
+if (localStorage.getItem("mode")) {
+  if (localStorage.getItem("mode") === "dark") {
     modeInput.setAttribute("checked", "checked");
   }
 }
@@ -63,14 +62,14 @@ addBtn.onclick = createNoteObject;
 reset.onclick = resetAllSettings;
 
 modeInput.onchange = function () {
-  if (modeInput.checked) changeMode("dark");
-  else changeMode("light");
+  if (modeInput.checked) saveMode("dark");
+  else saveMode("light");
 };
 
 colorInputs.forEach((e) => {
   e.addEventListener("input", function (event) {
     colors[event.target.dataset.index] = this.value;
-    updatePage();
+    updateAllNotesColor();
   });
   e.addEventListener("change", saveColorPalette);
 });
@@ -133,6 +132,35 @@ function updateSideFontSettings() {
   }
 }
 
+function createNoteObject() {
+  notesArray.push({
+    id: Date.now(),
+    colorIndex: 0,
+    content: "",
+    lang: "en",
+  });
+  updatePage();
+  saveAllNotes();
+  document.querySelector(".note textArea").focus();
+}
+
+function updatePage() {
+  // Removes All Notes from page
+  document.querySelectorAll(".note").forEach((e) => e.remove());
+  // Add All Notes inside notes Array to the page
+  for (let i = 0; i < notesArray.length; i++) {
+    let note = createNote(
+      notesArray[i].id,
+      notesArray[i].colorIndex,
+      notesArray[i].content,
+      notesArray[i].lang
+    );
+    notes.prepend(note);
+  }
+  updateFontSettings();
+  updateColorCount();
+}
+
 function createNote(id, colorIndex, content, lang) {
   let note = document.createElement("div");
   note.classList.add("note", "card");
@@ -141,16 +169,16 @@ function createNote(id, colorIndex, content, lang) {
 
   for (let i = 0; i < colors.length; i++) {
     let span = document.createElement("span");
-    span.setAttribute("data-color", colors[i]);
+    span.setAttribute("data-index", i);
     span.style.backgroundColor = colors[i];
     span.className = "color";
 
     span.onclick = function () {
+      let index = span.dataset.index;
       span.parentElement.querySelector("textArea").style.backgroundColor =
-        span.dataset.color;
-      span.parentElement.style.backgroundColor = span.dataset.color;
-      updateNoteColor(id, span.dataset.color);
-      updateColorCount();
+        colors[index];
+      span.parentElement.style.backgroundColor = colors[index];
+      updateNoteColor(id, index);
     };
 
     note.appendChild(span);
@@ -161,6 +189,7 @@ function createNote(id, colorIndex, content, lang) {
   textArea.placeholder = "Type any Note";
   textArea.style.backgroundColor = colors[colorIndex];
   textArea.value = content;
+  textArea.setAttribute("data-color-index", colorIndex);
 
   if (lang === "ar") textArea.dir = "rtl";
   else textArea.dir = "ltr";
@@ -191,35 +220,6 @@ function createNote(id, colorIndex, content, lang) {
   return note;
 }
 
-function createNoteObject() {
-  notesArray.push({
-    id: Date.now(),
-    colorIndex: 0,
-    content: "",
-    lang: "en",
-  });
-  updatePage();
-  saveAllNotes();
-  document.querySelector(".note textArea").focus();
-}
-
-function updatePage() {
-  // Removes All Notes from page
-  document.querySelectorAll(".note").forEach((e) => e.remove());
-  // Add All Notes inside notes Array to the page
-  for (let i = 0; i < notesArray.length; i++) {
-    let note = createNote(
-      notesArray[i].id,
-      notesArray[i].colorIndex,
-      notesArray[i].content,
-      notesArray[i].lang
-    );
-    notes.prepend(note);
-  }
-  updateFontSettings();
-  updateColorCount();
-}
-
 function deleteNote(id) {
   for (let i = 0; i < notesArray.length; i++) {
     if (notesArray[i].id === id) {
@@ -241,14 +241,28 @@ function updateNoteContent(id, value) {
   }
 }
 
-function updateNoteColor(id, value) {
+function updateNoteColor(id, index) {
   for (let i = 0; i < notesArray.length; i++) {
     if (notesArray[i].id == id) {
-      notesArray[i].colorIndex = colors.indexOf(value);
+      notesArray[i].colorIndex = index;
       saveAllNotes();
+      updateColorCount();
       break;
     }
   }
+}
+
+function updateAllNotesColor() {
+  document.querySelectorAll(".note").forEach((note) => {
+    note.querySelectorAll("span").forEach((span) => {
+      span.style.backgroundColor = colors[span.dataset.index];
+    });
+    let textArea = note.querySelector("textarea");
+    let color = colors[textArea.dataset.colorIndex];
+    note.style.backgroundColor = color;
+    textArea.style.backgroundColor = color;
+  });
+  updateColorCount();
 }
 
 function updateCountArray() {
@@ -298,10 +312,6 @@ function setLang(id, value) {
   }
 }
 
-function changeMode(mode) {
-  localStorage.setItem("mode", mode);
-}
-
 function resetColorSettings() {
   colors = ["#938c8d", "#ffb900", "#ff6001", "#ff1e71", "#864af3", "#2f86ff"];
   saveColorPalette();
@@ -317,12 +327,14 @@ function resetFontSettings() {
   saveFontSettings();
 }
 
-function resetAllSettings () {
+function resetAllSettings() {
   resetColorSettings();
   resetFontSettings();
-  updatePage();
-  updateSideFontSettings();
-  updateSidebarColors();
+  updatePageSettings();
+}
+
+function saveMode(mode) {
+  localStorage.setItem("mode", mode);
 }
 
 function saveAllNotes() {
@@ -341,4 +353,14 @@ function updateSidebarColors() {
   colorInputs.forEach((e) => {
     e.value = colors[e.dataset.index];
   });
+}
+
+function updatePageSettings() {
+  updateAllNotesColor();
+  updateSidebarSettings();
+}
+
+function updateSidebarSettings() {
+  updateSideFontSettings();
+  updateSidebarColors();
 }
