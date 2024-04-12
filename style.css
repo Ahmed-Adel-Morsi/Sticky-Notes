@@ -9,6 +9,7 @@
   --x-button-hov-back: #eef1f4;
   --x-button-hov-fill: #1f2328;
   --sidebar-background: #ffffff;
+  --anchor-color: #0064ff;
 }
 
 * {
@@ -480,7 +481,7 @@ body {
 
     a {
       text-decoration: none;
-      color: #2196f3;
+      color: var(--anchor-color);
 
       &:hover {
         text-decoration: underline;
@@ -499,5 +500,6 @@ body {
     --x-button-hov-back: #292e36;
     --x-button-hov-fill: #e6edf3;
     --sidebar-background: #161b22;
+    --anchor-color: #1890ff;
   }
 }

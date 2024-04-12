@@ -314,7 +314,7 @@ function setLang(id, value) {
 }
 
 function resetColorSettings() {
-  colors = ["#938c8d", "#ffb900", "#ff6001", "#ff1e71", "#864af3", "#2f86ff"];
+  colors = ["#164863", "#747264", "#65451F", "#0174BE", "#453F78", "#B2533E"];
   saveColorPalette();
 }
 
