@@ -359,6 +359,7 @@ function updateSidebarColors() {
 function updatePageSettings() {
   updateAllNotesColor();
   updateSidebarSettings();
+  updateFontSettings();
 }
 
 function updateSidebarSettings() {
