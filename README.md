@@ -2,7 +2,7 @@
 
 # Sticky Notes App
 
-![Sticky Notes](https://user-images.githubusercontent.com/12345678/98765432/sticky-notes-demo.png)
+![Sticky Notes](/icon.png)
 
 ---
 
