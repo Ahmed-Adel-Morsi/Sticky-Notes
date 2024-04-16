@@ -2,6 +2,7 @@
 
 # Sticky Notes App
 
+---
 
 ### Welcome to Sticky Notes!
 
