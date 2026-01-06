@@ -1,6 +1,6 @@
 # Sticky Notes App
 
-Simple, browser-based sticky notes built with vanilla JavaScript. Create, edit, and delete notes with instant persistence in localStorage, customizable colors, and font settings.
+Simple, browser-based sticky notes built with vanilla JavaScript. Create, edit, and delete notes with instant persistence in localStorage, customizable colors, and typography settings.
 
 ## Features
 
@@ -23,6 +23,7 @@ Simple, browser-based sticky notes built with vanilla JavaScript. Create, edit, 
 - UI is rendered dynamically from the saved notes array; updates re-render the list to keep state in sync.
 - Color palette and font settings are stored in localStorage and applied across all notes; counters show how many notes use each color.
 - Light/dark mode preference is saved and reapplied on load; layout adjusts for desktop and mobile via a responsive sidebar.
+- Event-driven updates handle note interactions and UI state changes.
 
 ## Getting Started
 
