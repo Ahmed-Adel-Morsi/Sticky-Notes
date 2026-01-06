@@ -41,7 +41,7 @@ stickyNotes/
 
 ## Live Demo
 
-Add link here when available.
+https://ahmed-adel-morsi.github.io/Sticky-Notes/
 
 ## Clean Code and Simplicity
 
